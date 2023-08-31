@@ -6,7 +6,7 @@ Charles Thomas Wallace Truscott
 Basic Demonstration of what is learnt at MIT in 6.0001 and 6.0002
 """
 import numpy as np
-
+import math
 import random
 
 class MITStat(object):
@@ -55,8 +55,19 @@ class MITStat(object):
         L = []
         R = []
         for elem in self.x:
-            R.append(((1 / (self.stddev() * self.sqrt(2 * np.pi))) * np.e ** (-((elem - self.mean()) / (2 * self.stddev()) ** 2))))
+            R.append((1 / (self.stddev() * self.sqrt(2 * np.pi)) * np.e ** (-((elem - self.mean()) / (2 * self.stddev()) ** 2))))
         return R
+    def geometric_distribution(self):
+        L = []
+        for elem in self.x:
+            L.append(((1 - elem) ** ((1)/(len(self.x)))) * elem)
+        return L
+    def binomial_distribution(self):
+        L = []
+        bincoeff = math.factorial(len(self.x)) / math.factorial(len(self.x)) * math.factorial(len(self.x) - len(self.x))
+        for elem in self.x:
+            L.append(bincoeff * (elem ** len(self.x)) *  (1 - elem) ** (len(self.x) - len(self.x)))
+        return L
 def CharlesTruscott():
     # I love you Alison Thompson OAM
     # I love you Dad, Mark William Watters and Uncle Rodney
@@ -75,8 +86,21 @@ def CharlesTruscott():
     plt.figure(1, dpi=600, figsize=[8, 8])
     x2 = x1
     y2 = n.normal_distribution()
-    plt.hist(y2, bins=11, histtype='bar', cumulative=True, align='mid')
-    plt.show()
+    plt.title("Charles Truscott Watters. Normal Distribution of Randomly Generated Data")
+    plt.hist(y2, bins=20, histtype='bar', cumulative=True, align='mid', color='pink', edgecolor='black')
+    plt.savefig('1.png')
+    x3 = x1
+    y3 = n.geometric_distribution()
+    plt.figure(2, dpi=600, figsize=[8, 8])
+    plt.title("Charles Truscott Watters. Geometric Distribution of Randomly Generated Data")
+    plt.hist(y3, histtype='bar', cumulative=True, align='mid', color='crimson', edgecolor='black')
+    plt.savefig('2.png')
+    x4 = x1
+    y4 = n.binomial_distribution()
+    plt.figure(3, dpi=600, figsize=[8, 8])
+    plt.title("Charles Truscott Watters. Binomial Distribution of Randomly Generated Data, where n = k")
+    plt.hist(y4, histtype='bar', cumulative=True, align='mid', color='crimson', edgecolor='black')
+    plt.savefig('3.png')
 #    plt.figure(2, dpi=600, figsize=[8, 8])
 #    plt.plot(x2, y2)
 #    plt.show()
